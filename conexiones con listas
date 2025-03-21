@@ -1,0 +1,13 @@
+%conexion_dir(ciudad_A,ciudad_B,precio),va de a hacia b solamente
+conexion_dir(ciudad(vancouver),ciudad(edmonton),costo(16)).
+conexion_dir(ciudad(vancouver),ciudad(calgary),costo(13)).
+conexion_dir(ciudad(calgary),ciudad(edmonton),costo(4)).
+conexion_dir(ciudad(calgary),ciudad(regina),costo(14)).
+conexion_dir(ciudad(edmonton),ciudad(saskatoon),costo(12)).
+conexion_dir(ciudad(saskatoon),ciudad(calgary),costo(9)).
+conexion_dir(ciudad(saskatoon),ciudad(winnipeg),costo(20)).
+conexion_dir(ciudad(regina),ciudad(saskatoon),costo(7)).
+conexion_dir(ciudad(regina),ciudad(winnipeg),costo(4)).
+
+conexion_dir(ciudad(O),ciudad(D),costo(C)).
+hay_conexion(O,D):- conexion_dir(ciudad(O),ciudad(D),_).
