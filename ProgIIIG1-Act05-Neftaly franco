@@ -1,0 +1,18 @@
+% hechos usando listas
+padres([abraham, mona], herbert).
+padres([abraham, mona], homero).
+padres([homero, marge], bart).
+padres([homero, marge], lisa).
+padres([homero, marge], maggie).
+padres([clancy, jacqueline], marge).
+padres([clancy, jacqueline], patty).
+padres([clancy, jacqueline], selma).
+padres([desconocido, selma], ling).
+
+% reglas
+es_padre(X, Z) :- padres([X, _], Z).
+es_madre(Y, Z) :- padres([_, Y], Z).
+padres_de([X, Y], Z) :- padres([X, Y], Z).
+es_hijo(Z, R) :- padres([R, _], Z); padres([_, R], Z).
+son_hermanos(A, B) :- padres([X, Y], A), padres([X, Y], B), A \= B.
+es_tio(A, Z) :- padres([X, Y], Z), (son_hermanos(A, X); son_hermanos(A, Y)), \+ es_hijo(Z, A).
