@@ -1,4 +1,4 @@
-% hechos usando listas
+% hechos
 padres([abraham, mona], herbert).
 padres([abraham, mona], homero).
 padres([homero, marge], bart).
@@ -16,3 +16,6 @@ padres_de([X, Y], Z) :- padres([X, Y], Z).
 es_hijo(Z, R) :- padres([R, _], Z); padres([_, R], Z).
 son_hermanos(A, B) :- padres([X, Y], A), padres([X, Y], B), A \= B.
 es_tio(A, Z) :- padres([X, Y], Z), (son_hermanos(A, X); son_hermanos(A, Y)), \+ es_hijo(Z, A).
+es_abuelo(A, Z) :- padres([X, Y], Z), (es_padre(A, X); es_padre(A, Y)).
+es_abuela(A, Z) :- padres([X, Y], Z), (es_madre(A, X); es_madre(A, Y)).
+es_primo(A, B) :- padres([X, Y], A), (es_tio(X, B); es_tio(Y, B)).
