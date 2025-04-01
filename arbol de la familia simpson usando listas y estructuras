@@ -1,13 +1,20 @@
 % hechos usando listas y estructuras 
 
-estructura(familia,[padre_de(abraham, mona),[herbert, homero],
-           padre_de(homero, marge),[bart, lisa, maggie],
-           padre_de(clancy, jacqueline),[marge, patty, selma],
-           padre_de(desconocido, selma),[ling]]).
+estructura(familia, [
+                    padre_de(abraham, mona),[herbert, homero],
+                    padre_de(homero, marge),[bart, lisa, maggie],
+                    padre_de(clancy, jacqueline),[marge, patty, selma],
+                    padre_de(desconocido, selma),[ling]]).
 
 % reglas
-buscar_hijo([Y], Y).
-buscar_hijo([_, X], Y) :- buscar_hijo(X, Y).
+buscar([Y|_], Y).
+buscar([_|X], Y) :- buscar(X, Y).
 
+buscarv([padre_de(Padre, Madre), Hijos|_], Padre, Madre, Hijos).
+buscarv([_|T], Padre, Madre, Hijos) :- buscarv(T, Padre, Madre, Hijos).
+        
 padre(Hijo, Padre) :-
-    estructura(familia, [padre_de(Padre,_), Hijos]), buscar_hijo(Hijos,Hijo).
+    estructura(familia, Listas),buscarv(Listas,Padre,_,Hijos),buscar(Hijos,Hijo).
+
+madre(Hijo, Madre) :-
+    estructura(familia, Listas),buscarv(Listas,_,Madre,Hijos),buscar(Hijos,Hijo).
