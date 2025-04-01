@@ -1,0 +1,13 @@
+% hechos usando listas y estructuras 
+
+estructura(familia,[padre_de(abraham, mona),[herbert, homero],
+           padre_de(homero, marge),[bart, lisa, maggie],
+           padre_de(clancy, jacqueline),[marge, patty, selma],
+           padre_de(desconocido, selma),[ling]]).
+
+% reglas
+buscar_hijo([Y], Y).
+buscar_hijo([_, X], Y) :- buscar_hijo(X, Y).
+
+padre(Hijo, Padre) :-
+    estructura(familia, [padre_de(Padre,_), Hijos]), buscar_hijo(Hijos,Hijo).
