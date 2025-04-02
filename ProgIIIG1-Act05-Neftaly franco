@@ -1,21 +1,23 @@
-% hechos
-padres([abraham, mona], herbert).
-padres([abraham, mona], homero).
-padres([homero, marge], bart).
-padres([homero, marge], lisa).
-padres([homero, marge], maggie).
-padres([clancy, jacqueline], marge).
-padres([clancy, jacqueline], patty).
-padres([clancy, jacqueline], selma).
-padres([desconocido, selma], ling).
+% hechos usando listas y estructuras 
+
+estructura(familia, [
+                    padre_de(abraham, mona),[herbert, homero],
+                    padre_de(homero, marge),[bart, lisa, maggie],
+                    padre_de(clancy, jacqueline),[marge, patty, selma],
+                    padre_de(desconocido, selma),[ling]]).
 
 % reglas
-es_padre(X, Z) :- padres([X, _], Z).
-es_madre(Y, Z) :- padres([_, Y], Z).
-padres_de([X, Y], Z) :- padres([X, Y], Z).
-es_hijo(Z, R) :- padres([R, _], Z); padres([_, R], Z).
-son_hermanos(A, B) :- padres([X, Y], A), padres([X, Y], B), A \= B.
-es_tio(A, Z) :- padres([X, Y], Z), (son_hermanos(A, X); son_hermanos(A, Y)), \+ es_hijo(Z, A).
-es_abuelo(A, Z) :- padres([X, Y], Z), (es_padre(A, X); es_padre(A, Y)).
-es_abuela(A, Z) :- padres([X, Y], Z), (es_madre(A, X); es_madre(A, Y)).
-es_primo(A, B) :- padres([X, Y], A), (es_tio(X, B); es_tio(Y, B)).
+buscar([Y|_], Y).
+buscar([_|X], Y) :- buscar(X, Y).
+
+buscarv([padre_de(Padre, Madre), Hijos|_], Padre, Madre, Hijos).
+buscarv([_|T], Padre, Madre, Hijos) :- buscarv(T, Padre, Madre, Hijos).
+        
+padre(Hijo, Padre) :-
+    estructura(familia, Listas),buscarv(Listas,Padre,_,Hijos),buscar(Hijos,Hijo).
+
+madre(Hijo, Madre) :-
+    estructura(familia, Listas),buscarv(Listas,_,Madre,Hijos),buscar(Hijos,Hijo).
+
+tio(Sobrino, Tio) :- padre(Sobrino, Padre),padre(Padre, Padre1), padre(Tio, Padre1), Tio \= Padre.
+tia(Sobrino, Ti) :- madre(Sobrino, Madre),madre(Madre, Madre1), madre(Ti, Madre1), Ti \= Madre.
